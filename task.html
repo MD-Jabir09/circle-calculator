@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .task-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f1f1f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .complete-btn {
+            background-color: #007bff;
+        }
+        .complete-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Task Manager</h1>
+
+    <div class="task-container">
+        <input type="text" id="taskInput" placeholder="Enter a task..." />
+        <button onclick="addTask()">Add Task</button>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        // Load tasks from localStorage when the page is loaded
+        document.addEventListener('DOMContentLoaded', loadTasks);
+
+        // Function to add a new task
+        function addTask() {
+            const taskInput = document.getElementById("taskInput");
+            const taskText = taskInput.value.trim();
+            
+            if (taskText === "") {
+                alert("Please enter a task.");
+                return;
+            }
+
+            const taskList = document.getElementById("taskList");
+
+            // Create a new list item
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <span>${taskText}</span>
+                <div class="action-buttons">
+                    <button class="complete-btn" onclick="markComplete(this)">Complete</button>
+                    <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
+                </div>
+            `;
+
+            taskList.appendChild(listItem);
+
+            // Save the task to localStorage
+            saveTask(taskText);
+
+            taskInput.value = ""; // Clear the input field
+        }
+
+        // Function to mark a task as completed
+        function markComplete(button) {
+            const taskItem = button.parentElement.parentElement;
+            const taskText = taskItem.querySelector("span");
+
+            if (taskText.classList.contains("completed")) {
+                taskText.classList.remove("completed");
+                button.innerText = "Complete";
+            } else {
+                taskText.classList.add("completed");
+                button.innerText = "Undo";
+            }
+
+            // Update task status in localStorage
+            updateTaskStatus(taskText.textContent, taskText.classList.contains("completed"));
+        }
+
+        // Function to delete a task
+        function deleteTask(button) {
+            const taskItem = button.parentElement.parentElement;
+            const taskText = taskItem.querySelector("span").textContent;
+
+            // Remove the task from the UI
+            taskItem.remove();
+
+            // Remove the task from localStorage
+            removeTask(taskText);
+        }
+
+        // Save task to localStorage
+        function saveTask(taskText) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push({ text: taskText, completed: false });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        // Remove task from localStorage
+        function removeTask(taskText) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks = tasks.filter(task => task.text !== taskText);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        // Update task completion status in localStorage
+        function updateTaskStatus(taskText, completed) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.forEach(task => {
+                if (task.text === taskText) {
+                    task.completed = completed;
+                }
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        // Load tasks from localStorage when the page is refreshed
+        function loadTasks() {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.forEach(task => {
+                const taskList = document.getElementById("taskList");
+
+                // Create a new list item
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
+                    <div class="action-buttons">
+                        <button class="complete-btn" onclick="markComplete(this)">${task.completed ? 'Undo' : 'Complete'}</button>
+                        <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
+                    </div>
+                `;
+
+                taskList.appendChild(listItem);
+            });
+        }
+    </script>
+
+</body>
+</html>

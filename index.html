@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Circle Calculator</h1>
+
+        <label for="Radius">Radius: </label>
+        <input type="number" name="Radius" id="Radius">
+        <label for="Diameter">Diameter: </label>
+        <input type="number" name="Diameter" id="Diameter">
+        <label for="Circumference">Circumference: </label>
+        <input type="number" name="Circumference" id="Circumference">
+        <label for="Area">Area: </label>
+        <input type="number" name="Area" id="Area">
+        
+        <div class="button-container">
+            <button id="calculate">Calculate</button>
+            <button type="reset" id="reset" onclick="resetFields()">Reset</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

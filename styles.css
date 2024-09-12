@@ -1,0 +1,99 @@
+* {
+    color: white;
+    box-sizing: border-box; /* Ensures padding and borders are included in the element's total width and height */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #222; /* Added a background color for better contrast */
+}
+
+input {
+    border: none;
+    outline: none;
+    margin: 1vh 0; /* Adjusted margin for better spacing */
+    text-align: center;
+    width: 100%; /* Full width of the container */
+    height: 40px; /* Fixed height for consistency */
+    font-size: 16px; /* Font size for better readability */
+}
+
+input[type='number'] {
+    color: black;
+}
+
+label {
+    margin: 1vh 0;
+    font-size: 18px;
+    font-family: cursive;
+    display: block; /* Ensures labels are on their own line */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(53, 49, 49);
+    padding: 5% 3%;
+    width: 90%;
+    max-width: 500px; /* Increased max-width for better PC display */
+    border-radius: 10px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#calculate, #reset {
+    width: 48%; /* Each button takes 48% to account for spacing between them */
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px; /* Consistent font size */
+}
+
+#calculate {
+    background-color: orange;
+}
+
+#calculate:hover {
+    background-color: rgb(233, 112, 68);
+}
+
+#reset {
+    background-color: rgb(255, 0, 0);
+}
+
+#reset:hover {
+    background-color: rgb(200, 0, 0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 5% 2%;
+    }
+    
+    input {
+        height: 35px; /* Slightly smaller height on mobile */
+    }
+    
+    #calculate, #reset {
+        font-size: 14px; /* Smaller font size for mobile */
+    }
+}
